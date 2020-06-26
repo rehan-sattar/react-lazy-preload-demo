@@ -1,20 +1,20 @@
-import React from "react";
-import StockTable from "./StockTable";
+import React from 'react';
+import StockTable from './StockTable';
 
-import StockChart from "./StockChart";
+const StockChart = React.lazy(() => import('./StockChart'));
 
 class App extends React.Component {
   state = {
-    selectedStock: null
+    selectedStock: null,
   };
   render() {
     const { stocks } = this.props;
     const { selectedStock } = this.state;
     return (
-      <React.Fragment>
+      <React.Suspense fallback={<div>loading...</div>}>
         <StockTable
           stocks={stocks}
-          onSelect={selectedStock => this.setState({ selectedStock })}
+          onSelect={(selectedStock) => this.setState({ selectedStock })}
         />
         {selectedStock && (
           <StockChart
@@ -22,7 +22,7 @@ class App extends React.Component {
             onClose={() => this.setState({ selectedStock: false })}
           />
         )}
-      </React.Fragment>
+      </React.Suspense>
     );
   }
 }
